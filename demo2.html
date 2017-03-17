@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+<script src="../js/vue-router.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="../css/animate.css"/>
+<style type="text/css">
+	img{width:300px;height:300px;}
+</style>
+</head>
+<body>
+<div id="out">
+	
+	<!--路由路径-->
+	<router-link to="{name:'index'}">首页</router-link>
+	<router-link to="/about">关于</router-link>
+	<router-link to="/other">其他</router-link>
+	<router-link to="/shuju">存储数据</router-link>
+	
+	<!--加载试图容器-->
+	<transition enter-active-class="animated fadeInDownBig" 
+        	leave-active-class="animated bounceOutRight">
+		<router-view></router-view>
+	</transition>
+	
+	
+	<router-view name="page"></router-view>
+</div>
+
+
+<template id="shuju">
+	<div>
+		<router-link to="/shuju/first">数据一</router-link>
+		<router-link to="/shuju/second">数据二</router-link>	
+		<!--子视图容器  存储数据一模版，数据二模版-->
+		<router-view></router-view>
+		
+	</div>	
+</template>
+
+<template id="first">
+	<div>
+		<hr />
+		<div>这是数据一的内容</div>
+	</div>
+</template>
+
+<template id="second">
+	<div>
+		<hr />
+		<div>这是数据2的内容</div>
+		<img src="../img/7c3781234da7295e9619c37ed47cede8.jpg"/>
+	</div>
+</template>
+
+
+<!--<template id="aaa">
+	<div>
+		<h2>数据一数据二均加载到此模版上</h2>
+		<h1>现在加载的是－－－{{$route.params.id}}</h1>
+	</div>
+</template>-->
+
+
+
+
+
+<!--<template id="con">
+	<div>
+		这是子数据－－－－{{$route.params.id}}
+	</div>
+</template>-->
+
+
+
+<template id="index">
+	<div>
+		<h2>这是首页的内容</h2>
+		<img src="../img/0810aab8ab9494ec93e31e92777f0a11.jpg"/>
+	</div>
+</template>
+
+<template id="about">
+	<div>
+		<h2>这是about的内容</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi ratione optio adipisci accusantium saepe ea commodi incidunt nesciunt ex iusto blanditiis recusandae reiciendis fuga sapiente accusamus labore laboriosam earum voluptatibus.</p>
+	</div>
+</template>
+
+<template id="other">
+	<div>
+		<h2>这是other的内容</h2>
+		<img src="../img/aacb7e6e5c1a066021ef1a7d46ca987d.jpg"/>
+	</div>
+</template>
+
+	
+</body>
+<script type="text/javascript">
+	
+//组件创建
+	var index={
+		template:'#index'
+	}
+	var about={
+		template:'#about'
+	}
+	var other={
+		template:'#other'
+	}
+	var shuju={
+		template:'#shuju'
+	}
+//	var con={
+//		template:'#con'
+//	}
+
+var first={
+	template:'#first'
+}
+var second={
+	template:'#second'
+}
+
+//var aaa={
+//	template:'#aaa'
+//}
+	
+
+
+//配置路由
+
+var router=[
+	{path:'/index',name:'index',components:{
+		default:index,
+		page:about
+	}
+	},
+	{path:'/about',component:about},
+	{path:'/other',component:other},
+	{path:'/shuju',component:shuju,
+		"children":[
+			{path:'first',component:first},
+			{path:'second',component:second}
+//			{path:':id',component:aaa}	
+		]
+	},
+	{path:'*',redirect:'/index'}
+]
+//实例化路由对象
+
+var routers=new VueRouter({
+	routes:router
+})
+//把路由实例化对象挂载到vue实例化对象上－－通过router属性
+	
+	var vm=new Vue({
+		el:'#out',
+		router:routers
+	})
+</script>
+</html>
